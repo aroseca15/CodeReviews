@@ -20,6 +20,7 @@ variable "db_password" {
   default     = "n<A8ynAtZWVAfZ8+MQ|uHMNbFG$*}"
 }
 
+## These resources already exist in AWS and we'd like to reuse them, hence we are pulling them to be used in this Terraform configuration
 variable "vpc_id" {
   default = "vpc-b09aa2c8"
 }
