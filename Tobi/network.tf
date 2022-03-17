@@ -26,28 +26,13 @@ data "aws_subnet" "private-2" {
 # Public Subnets - Inbound/Outbound Internet Access #
 #####################################################
 
+#########################
+# Public Subnet-1 asign #
+#########################
 data "aws_subnet" "public-1" {
   id = var.public1
 }
 
-## route table and route not required for public subnets, theses are created automatically by AWS for default VPCs
-
-#resource "aws_route_table" "public-1" {
-#  subnet_id = data.aws_subnet.public-1.id
-#}
-#
-#
-#resource "aws_route_table_association" "public-1" {
-#  subnet_id      = data.aws_subnet.public-1.id
-#  route_table_id = data.aws_route_table.public-1.id
-#}
-#
-#resource "aws_route" "public_internet_access_1" {
-#  route_table_id         = data.aws_route_table.public-1.id
-#  destination_cidr_block = "0.0.0.0/0"
-#  vpc_id = data.aws_vpc.main.id
-#}
-#
 resource "aws_eip" "public-1" {
   vpc = true
 
@@ -67,34 +52,12 @@ resource "aws_nat_gateway" "public-1" {
   )
 }
 
-
-
+#########################
+# Public Subnet-2 asign #
+#########################
 data "aws_subnet" "public-2" {
   id = var.public2
 }
-
-## route table and route not required for public subnets, theses are created automatically by AWS for default VPCs
-
-#resource "aws_route_table" "public-2" {
-#  vpc_id = data.aws_vpc.main.id
-#
-#
-#  tags = merge(
-#    local.common_tags,
-#    tomap({ "Name" = "${local.prefix}-public-2" })
-#  )
-#}
-#
-#resource "aws_route_table_association" "public-2" {
-#  subnet_id      = data.aws_subnet.public-2.id
-#  route_table_id = data.aws_route_table.public-2.id
-#}
-#
-#resource "aws_route" "public_internet_access_2" {
-#  route_table_id         = data.aws_route_table.public-2.id
-#  destination_cidr_block = "0.0.0.0/0"
-#  # gateway_id             = aws_internet_gateway.main.id
-#}
 
 resource "aws_eip" "public-2" {
   vpc = true
@@ -119,6 +82,10 @@ resource "aws_nat_gateway" "public-2" {
 # Private Subnets - Outbound internt access only #
 ##################################################
 
+#########################
+# Private Subnet-1 asign #
+#########################
+
 resource "aws_route_table" "private-1" {
   vpc_id = data.aws_vpc.main.id
 
@@ -140,6 +107,10 @@ resource "aws_route" "private_1_internet_out" {
   destination_cidr_block = "0.0.0.0/0"
 }
 
+
+#########################
+# Purivate Subnet-2 asign #
+#########################
 
 resource "aws_route_table" "private-2" {
   vpc_id = data.aws_vpc.main.id
