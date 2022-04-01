@@ -1,13 +1,13 @@
 variable "prefix" {
-  default = "telpsyrx-be"
+  default = "project-be"
 }
 
 variable "project" {
-  default = "TelePsycRX_Backend"
+  default = "Backend"
 }
 
 variable "contact" {
-  default = "amanda.macdonald@telepsycrx.com"
+  default = "contactEmail.com"
 }
 
 variable "db_username" {
@@ -66,12 +66,12 @@ variable "bastion_key_name" {
 
 variable "ecr_image_api" {
   description = "ECR Image for API"
-  default     = "799189704293.dkr.ecr.us-west-2.amazonaws.com/telepsycrx-staging-backend-tf-images:latest"
+  default     = "API:latest"
 }
 
 variable "ecr_image_proxy" {
   description = "ECR Image for API"
-  default     = "799189704293.dkr.ecr.us-west-2.amazonaws.com/telepsycrx-staging-api-proxy:latest"
+  default     = "ECR:latest"
 }
 
 variable "django_secret_key" {
