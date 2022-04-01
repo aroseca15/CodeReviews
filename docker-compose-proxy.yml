@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+    app:
+      build:
+        context: .
+      volumes:
+        - ./config:/config
+        - static_data:/vol/web
+      environment: 
+        - SECRET_KEY=${DJANGO_SECRET_KEY}
+        - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+        - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      depends_on:
+          - db
+
+    proxy: 
+      image: proxy:latest
+      depends_on:
+        - app
+      ports:
+        - "8000:8000"
+      volumes:
+        - static_data:/vol/static
+
+    db:
+      image: postgres:13.4-alpine
+      environment:
+        - POSTGRES_DB=${TF_VAR_db_name}
+        - POSTGRES_USER=${TF_VAR_db_username}
+        - POSTGRES_PASSWORD=${TF_VAR_db_password}
+
+volumes:
+  static_data:
