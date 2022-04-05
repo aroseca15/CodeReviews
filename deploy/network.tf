@@ -9,19 +9,6 @@
 #   }
 # }
 
-
-data "aws_vpc" "main" {
-  id = var.vpc_id
-}
-
-data "aws_subnet" "private-1" {
-  id = var.private1
-}
-
-data "aws_subnet" "private-2" {
-  id = var.private2
-}
-
 #####################################################
 # Public Subnets - Inbound/Outbound Internet Access #
 #####################################################
@@ -29,10 +16,6 @@ data "aws_subnet" "private-2" {
 #########################
 # Public Subnet-1 asign #
 #########################
-data "aws_subnet" "public-1" {
-  id = var.public1
-}
-
 resource "aws_eip" "public-1" {
   vpc = true
 
@@ -55,10 +38,6 @@ resource "aws_nat_gateway" "public-1" {
 #########################
 # Public Subnet-2 asign #
 #########################
-data "aws_subnet" "public-2" {
-  id = var.public2
-}
-
 resource "aws_eip" "public-2" {
   vpc = true
 
