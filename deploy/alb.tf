@@ -42,7 +42,7 @@ resource "aws_lb" "backend_api_alb" {
  
 resource "aws_alb_target_group" "backend_api_alb" {
   name        = "backend-api-alb"
-  port        = 80
+  port        = 8000
   protocol    = "HTTP"
   vpc_id      = data.aws_vpc.main.id
   target_type = "ip"
@@ -51,6 +51,7 @@ resource "aws_alb_target_group" "backend_api_alb" {
    healthy_threshold   = "3"
    interval            = "30"
    protocol            = "HTTP"
+   port                = 8000
    matcher             = "200"
    timeout             = "3"
    path                = "/"
