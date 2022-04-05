@@ -10,7 +10,6 @@ resource "aws_security_group" "backend_api_alb" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks      = [data.aws_vpc.main.cidr_block]
-    ipv6_cidr_blocks = [data.aws_vpc.main.ipv6_cidr_block]
   }
   ingress {
     description      = "TLS from VPC"
@@ -18,15 +17,13 @@ resource "aws_security_group" "backend_api_alb" {
     to_port          = 443
     protocol         = "tcp"
     cidr_blocks      = [data.aws_vpc.main.cidr_block]
-    ipv6_cidr_blocks = [data.aws_vpc.main.ipv6_cidr_block]
   }
 
   egress {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    cidr_blocks      = [data.aws_vpc.main.cidr_block]
   }
 
   tags = {
@@ -38,7 +35,6 @@ resource "aws_lb" "backend_api_alb" {
   name               = "backend-api-alb"
   internal           = false
   load_balancer_type = "application"
-  vpc_id             = data.aws_vpc.main.id
   subnets            = [data.aws_subnet.public-1.id, data.aws_subnet.public-2.id]
   security_groups    = [aws_security_group.backend_api_alb.id]
   enable_deletion_protection = false
@@ -82,8 +78,9 @@ resource "aws_alb_listener" "https" {
   load_balancer_arn = aws_lb.backend_api_alb.id
   port              = 443
   protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.alb_tls_cert_arn #TODO: provide a valid certificate ARN
+  #TODO: provide a valid certificate ARN to use
+  #ssl_policy        = "ELBSecurityPolicy-2016-08"
+  #certificate_arn   = var.alb_tls_cert_arn 
  
   default_action {
     target_group_arn = aws_alb_target_group.backend_api_alb.id
